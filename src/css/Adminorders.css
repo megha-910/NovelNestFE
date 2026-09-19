@@ -1,0 +1,363 @@
+/* =========================
+   ADMIN ORDERS PAGE
+========================= */
+
+.admin-orders {
+    min-height: 100vh;
+    padding: 30px;
+    background: #f5f6fa;
+    box-sizing: border-box;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.orders-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    background: #ffffff;
+    padding: 20px 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.orders-header h2 {
+    margin: 0;
+    font-size: 26px;
+    color: #222;
+}
+
+.orders-header span {
+    font-size: 15px;
+    color: #666;
+    font-weight: 500;
+}
+
+/* =========================
+   SEARCH + FILTER
+========================= */
+
+.orders-filter {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.orders-filter input {
+    width: 350px;
+    height: 45px;
+    padding: 0 15px;
+    border: 1px solid #ddd;
+    border-radius: 7px;
+    background: #fff;
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.orders-filter input:focus {
+    border-color: #555;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
+}
+
+.orders-filter input::placeholder {
+    color: #999;
+}
+
+.orders-filter select {
+    width: 180px;
+    height: 45px;
+    padding: 0 12px;
+    border: 1px solid #ddd;
+    border-radius: 7px;
+    background: #fff;
+    font-size: 14px;
+    color: #333;
+    outline: none;
+    cursor: pointer;
+}
+
+.orders-filter select:focus {
+    border-color: #555;
+}
+
+/* =========================
+   TABLE CONTAINER
+========================= */
+
+.orders-table {
+    width: 100%;
+    background: #ffffff;
+    border-radius: 10px;
+    overflow-x: auto;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.orders-table table {
+    width: 100%;
+    min-width: 950px;
+    border-collapse: collapse;
+}
+
+.orders-table thead {
+    background: #222;
+}
+
+.orders-table th {
+    padding: 15px 18px;
+    text-align: left;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.orders-table td {
+    padding: 16px 18px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    color: #444;
+    vertical-align: middle;
+}
+
+.orders-table tbody tr {
+    transition: background 0.2s ease;
+}
+
+.orders-table tbody tr:hover {
+    background: #f8f9fa;
+}
+
+.orders-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* =========================
+   ORDER ID
+========================= */
+
+.orders-table td:first-child {
+    font-weight: 600;
+    color: #222;
+}
+
+/* =========================
+   AMOUNT
+========================= */
+
+.orders-table td:nth-child(3) {
+    font-weight: 600;
+    color: #222;
+    white-space: nowrap;
+}
+
+/* =========================
+   PAYMENT ID
+========================= */
+
+.payment-id {
+    display: inline-block;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 5px 8px;
+    background: #f1f3f5;
+    border-radius: 5px;
+    font-size: 12px;
+    color: #555;
+}
+
+/* =========================
+   STATUS
+========================= */
+
+.status {
+    display: inline-block;
+    min-width: 90px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* PAID */
+
+.status.paid {
+    background: #fff3cd;
+    color: #856404;
+}
+
+/* PROCESSING */
+
+.status.processing {
+    background: #cfe2ff;
+    color: #084298;
+}
+
+/* SHIPPED */
+
+.status.shipped {
+    background: #e2d9f3;
+    color: #59359a;
+}
+
+/* DELIVERED */
+
+.status.delivered {
+    background: #d1e7dd;
+    color: #0f5132;
+}
+
+/* CANCELLED */
+
+.status.cancelled {
+    background: #f8d7da;
+    color: #842029;
+}
+
+/* REFUNDED */
+
+.status.refunded {
+    background: #f8d7da;
+    color: #842029;
+}
+
+/* =========================
+   ACTION BUTTONS
+========================= */
+
+.orders-table td:last-child {
+    white-space: nowrap;
+}
+
+.orders-table button {
+    border: none;
+    padding: 8px 13px;
+    margin-right: 7px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+/* View */
+
+.orders-table button:first-child {
+    background: #343a40;
+    color: white;
+}
+
+.orders-table button:first-child:hover {
+    background: #212529;
+}
+
+/* Process */
+
+.orders-table button:nth-child(2) {
+    background: #ffc107;
+    color: #212529;
+}
+
+.orders-table button:nth-child(2):hover {
+    background: #e0a800;
+}
+
+/* Ship */
+
+.orders-table button:nth-child(2) {
+    background: #6f42c1;
+    color: white;
+}
+
+/* Deliver */
+
+.orders-table button:nth-child(2) {
+    background: #198754;
+    color: white;
+}
+
+/* =========================
+   LOADING
+========================= */
+
+.admin-orders > h2 {
+    text-align: center;
+    margin-top: 100px;
+    color: #555;
+    font-size: 22px;
+}
+
+/* =========================
+   EMPTY TABLE
+========================= */
+
+.orders-table tbody:empty::after {
+    content: "No orders found";
+    display: block;
+    padding: 40px;
+    text-align: center;
+    color: #777;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+
+    .admin-orders {
+        padding: 20px;
+    }
+
+    .orders-header {
+        padding: 18px;
+    }
+
+    .orders-header h2 {
+        font-size: 22px;
+    }
+
+    .orders-filter {
+        flex-direction: column;
+    }
+
+    .orders-filter input,
+    .orders-filter select {
+        width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .admin-orders {
+        padding: 15px;
+    }
+
+    .orders-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .orders-header h2 {
+        font-size: 20px;
+    }
+
+    .orders-header span {
+        font-size: 13px;
+    }
+
+    .orders-table {
+        border-radius: 7px;
+    }
+}

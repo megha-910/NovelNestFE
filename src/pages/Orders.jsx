@@ -28,7 +28,7 @@ function Orders() {
                     <div className="order-details">
 
                         <p>
-                            <strong>Order ID:</strong> #{order.id}
+                            <strong>Order ID:</strong> #{order.id} 
                         </p>
 
                         <p>
@@ -38,6 +38,9 @@ function Orders() {
                         <p>
                             <strong>Status:</strong> {order.status}
                         </p>
+                    
+                            
+                        
 
                     </div>
                 )}

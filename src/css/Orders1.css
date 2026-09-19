@@ -208,3 +208,43 @@
         font-size: 13px;
     }
 }
+.status-flow {
+    display: flex;
+    justify-content: space-between;
+    margin: 25px 0;
+}
+
+.status-step {
+    text-align: center;
+    flex: 1;
+    color: #999;
+    position: relative;
+}
+
+.status-circle {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.status-step.completed {
+    color: green;
+}
+
+.status-step.completed .status-circle {
+    background: green;
+    color: white;
+    border-color: green;
+}
+
+.cancelled-status {
+    display: flex;
+    gap: 25px;
+    margin: 20px 0;
+    color: #d9534f;
+}

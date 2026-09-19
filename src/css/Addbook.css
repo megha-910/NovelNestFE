@@ -1,0 +1,168 @@
+.add-book-container {
+    min-height: 100vh;
+    padding: 30px;
+    background: #f5f6fa;
+    box-sizing: border-box;
+}
+
+.add-book-card {
+    max-width: 850px;
+    margin: 0 auto;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.add-book-header {
+    margin-bottom: 25px;
+}
+
+.add-book-header h2 {
+    margin: 0;
+    color: #222;
+    font-size: 26px;
+}
+
+.add-book-header p {
+    margin: 7px 0 0;
+    color: #777;
+    font-size: 14px;
+}
+
+
+/* FORM */
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    margin-bottom: 7px;
+    color: #333;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #555;
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+
+/* PRICE + STOCK */
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+
+/* IMAGE PREVIEW */
+
+.image-preview {
+    margin-bottom: 20px;
+}
+
+.image-preview p {
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.image-preview img {
+    width: 120px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+}
+
+
+/* BUTTONS */
+
+.form-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.form-buttons button {
+    padding: 11px 22px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.cancel-btn {
+    background: #6c757d;
+    color: white;
+}
+
+.cancel-btn:hover {
+    background: #5c636a;
+}
+
+.save-book-btn {
+    background: #198754;
+    color: white;
+}
+
+.save-book-btn:hover {
+    background: #146c43;
+}
+
+.save-book-btn:disabled {
+    background: #999;
+    cursor: not-allowed;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 700px) {
+
+    .add-book-container {
+        padding: 15px;
+    }
+
+    .add-book-card {
+        padding: 20px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .form-buttons {
+        flex-direction: column;
+    }
+
+    .form-buttons button {
+        width: 100%;
+    }
+}

@@ -1,26 +1,30 @@
-import { Link } from "react-router-dom";
+
+
+import { Link, useNavigate } from "react-router-dom";
 import "../css/Navbar.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 import {
     faHouse,
     faBookOpen,
-    faLayerGroup,
     faCartShopping,
-    faUser
+    faUser,
+    faGauge,
+    faBoxOpen
 } from "@fortawesome/free-solid-svg-icons";
-
 
 function Navbar() {
 
-        const navigate = useNavigate();
+    const navigate = useNavigate();
 
-    const [isLoggedIn, setIsLoggedIn] =
-        useState(
-            !!localStorage.getItem("token")
-        );
+    const [isLoggedIn, setIsLoggedIn] = useState(
+        !!localStorage.getItem("token")
+    );
+
+    const [role, setRole] = useState(
+        localStorage.getItem("role")
+    );
 
     const handleLogout = () => {
 
@@ -29,6 +33,7 @@ function Navbar() {
         localStorage.removeItem("role");
 
         setIsLoggedIn(false);
+        setRole(null);
 
         alert("Logout successful");
 
@@ -38,50 +43,60 @@ function Navbar() {
     return (
         <nav className="navbar">
 
+            {/* Logo */}
             <div className="logo">
                 <Link to="/">
-                  📚 NovelNest
+                    📚 NovelNest
                 </Link>
             </div>
 
+            {/* Navigation Links */}
             <div className="nav-links">
 
                 <Link to="/">
-                <FontAwesomeIcon icon={faHouse} />
+                    <FontAwesomeIcon icon={faHouse} />
                     Home
                 </Link>
 
                 <Link to="/novels">
-                <FontAwesomeIcon icon={faBookOpen} />
+                    <FontAwesomeIcon icon={faBookOpen} />
                     Novels
                 </Link>
+            
+                 
 
-                <Link to="/cart">
-                <FontAwesomeIcon icon={faCartShopping} />
-                    Cart
-                </Link>
-                  {!isLoggedIn ? (
+                {/* Login / Register / Logout */}
+                {!isLoggedIn ? (
 
                     <>
                         <Link to="/login" className="login-btn">
-                         <FontAwesomeIcon icon={faUser} />
+                            <FontAwesomeIcon icon={faUser} />
                             Login
                         </Link>
 
                         <Link to="/register" className="register-btn">
-                          <FontAwesomeIcon icon={faUser} />
+                            <FontAwesomeIcon icon={faUser} />
                             Register
                         </Link>
                     </>
 
                 ) : (
-
+                     <>
+                       <Link to="/cart">
+                       <FontAwesomeIcon icon={faCartShopping} /> Cart 
+                    </Link> 
+                    <Link to="/Myorders" className="nav-link">
+                     <FontAwesomeIcon icon={faBoxOpen} />
+                          My Orders
+                   </Link>
                     <button
                         onClick={handleLogout}
                         className="logout-btn"
                     >
                         Logout
                     </button>
+          
+                 </>
 
                 )}
 
@@ -92,5 +107,13 @@ function Navbar() {
 }
 
 export default Navbar;
+
+
+
+
+
+
+
+
 
 

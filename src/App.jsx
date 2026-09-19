@@ -1,45 +1,176 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-
 import Navbar from "./component/Navbar";
+
 import Home from "./component/Home";
+import Home1 from "./component/Home1";
+
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Home1 from "./component/Home1";
-import Cart from "./pages/Cart";
-import NotFound from "./pages/NotFound";
 import Verifyotp from "./pages/Verifyotp";
+import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import Orders from "./pages/Orders";
 import Orders1 from "./pages/Orders1";
+import NotFound from "./pages/NotFound";
+
+import Admin from "./pages/Admin";
+import Adminl from "./pages/Adminl";
+import Adminorders from "./pages/Adminorders";
+import Manageusers from "./pages/Manageusers";
+import Managebooks from "./pages/Managebooks";
+import Addbook from "./pages/Addbook";
 
 function App() {
+
     return (
         <BrowserRouter>
-            <Navbar />
+
             <Routes>
-                <Route path="/" element={<Home />} /> 
 
-                <Route path="/login" element={<Login />} />
+                {/* ================= USER SIDE ================= */}
 
-                <Route path="/register" element={<Register />} />
-                
-                <Route path="/verify-otp" element={<Verifyotp />} />
+                <Route
+                    path="/"
+                    element={
+                        <>
+                            <Navbar />
+                            <Home />
+                        </>
+                    }
+                />
 
-                <Route path="/novels" element={<Home1 />} />
+                <Route
+                    path="/login"
+                    element={
+                        <>
+                            <Navbar />
+                            <Login />
+                        </>
+                    }
+                />
 
-                <Route path="/cart" element={<Cart />} />
+                <Route
+                    path="/register"
+                    element={
+                        <>
+                            <Navbar />
+                            <Register />
+                        </>
+                    }
+                />
 
-                 <Route path="/checkout" element={<Checkout />} />
+                <Route
+                    path="/verify-otp"
+                    element={
+                        <>
+                            <Navbar />
+                            <Verifyotp />
+                        </>
+                    }
+                />
 
-                  <Route path="/Myorders" element={<Orders />} />
+                <Route
+                    path="/novels"
+                    element={
+                        <>
+                            <Navbar />
+                            <Home1 />
+                        </>
+                    }
+                />
 
-                  <Route path="/orders" element={<Orders1 />} />
+                <Route
+                    path="/cart"
+                    element={
+                        <>
+                            <Navbar />
+                            <Cart />
+                        </>
+                    }
+                />
 
-                <Route path="*" element={<NotFound />} />
+                <Route
+                    path="/checkout"
+                    element={
+                        <>
+                            <Navbar />
+                            <Checkout />
+                        </>
+                    }
+                />
+
+                <Route
+                    path="/Myorders"
+                    element={
+                        <>
+                            <Navbar />
+                            <Orders />
+                        </>
+                    }
+                />
+
+                <Route
+                    path="/orders"
+                    element={
+                        <>
+                            <Navbar />
+                            <Orders1 />
+                        </>
+                    }
+                />
+
+
+                {/* ================= ADMIN SIDE ================= */}
+
+                <Route
+                    path="/admin"
+                    element={<Adminl />}
+                >
+
+                    <Route
+                        index
+                        element={<Admin />}
+                    />
+                      <Route
+                        path="orders"
+                        element={<Adminorders />}
+                    />
+
+                       <Route
+                        path="users"
+                        element={<Manageusers />}
+                    />
+                    <Route
+                        path="books"
+                        element={<Managebooks />}
+                    />
+
+                     <Route
+                        path="saveb"
+                        element={<Addbook />}
+                    />
+
+                    {/* <Route  
+                      path="orders/:orderId"
+                      element={<AdminOrderDetails />}
+                     /> */}
+
+                </Route>
+
+
+                {/* ================= 404 ================= */}
+
+                <Route
+                    path="*"
+                    element={<NotFound />}
+                />
+
             </Routes>
+
         </BrowserRouter>
     );
 }
 
 export default App;
+

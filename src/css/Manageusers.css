@@ -1,0 +1,380 @@
+/* =========================
+   ADMIN USERS
+========================= */
+
+.admin-users {
+    min-height: 100vh;
+    padding: 30px;
+    background: #f5f6fa;
+    box-sizing: border-box;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.users-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background: white;
+
+    padding: 20px 25px;
+    margin-bottom: 25px;
+
+    border-radius: 10px;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.users-header h2 {
+    margin: 0;
+    color: #222;
+    font-size: 26px;
+}
+
+.users-header p {
+    margin: 6px 0 0;
+    color: #777;
+    font-size: 14px;
+}
+
+.users-header > span {
+    color: #555;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+
+/* =========================
+   FILTER
+========================= */
+
+.users-filter {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.users-filter input {
+    width: 350px;
+    height: 45px;
+
+    padding: 0 15px;
+
+    border: 1px solid #ddd;
+    border-radius: 7px;
+
+    background: white;
+
+    font-size: 14px;
+    outline: none;
+
+    box-sizing: border-box;
+}
+
+.users-filter input:focus {
+    border-color: #555;
+}
+
+.users-filter select {
+    width: 180px;
+    height: 45px;
+
+    padding: 0 12px;
+
+    border: 1px solid #ddd;
+    border-radius: 7px;
+
+    background: white;
+
+    font-size: 14px;
+
+    outline: none;
+
+    cursor: pointer;
+}
+
+
+/* =========================
+   TABLE
+========================= */
+
+.users-table {
+    width: 100%;
+
+    background: white;
+
+    border-radius: 10px;
+
+    overflow-x: auto;
+
+    box-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.users-table table {
+    width: 100%;
+
+    min-width: 950px;
+
+    border-collapse: collapse;
+}
+
+.users-table thead {
+    background: #222;
+}
+
+.users-table th {
+    padding: 15px 18px;
+
+    text-align: left;
+
+    color: white;
+
+    font-size: 14px;
+
+    font-weight: 600;
+}
+
+.users-table td {
+    padding: 16px 18px;
+
+    border-bottom: 1px solid #eee;
+
+    color: #444;
+
+    font-size: 14px;
+
+    vertical-align: middle;
+}
+
+.users-table tbody tr:hover {
+    background: #f8f9fa;
+}
+
+.users-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* =========================
+   ROLE
+========================= */
+
+.role {
+    display: inline-block;
+
+    padding: 5px 12px;
+
+    border-radius: 20px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+}
+
+.role.user {
+    background: #e7f1ff;
+    color: #0d6efd;
+}
+
+.role.admin {
+    background: #e2d9f3;
+    color: #59359a;
+}
+
+
+/* =========================
+   VERIFIED
+========================= */
+
+.verified {
+    color: #198754;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+.not-verified {
+    color: #dc3545;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+
+/* =========================
+   ACTIVE / INACTIVE
+========================= */
+
+.active-status,
+.inactive-status {
+    display: inline-block;
+
+    padding: 6px 12px;
+
+    border-radius: 20px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+}
+
+.active-status {
+    background: #d1e7dd;
+    color: #0f5132;
+}
+
+.inactive-status {
+    background: #f8d7da;
+    color: #842029;
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+.users-table button {
+    border: none;
+
+    padding: 8px 12px;
+
+    margin-right: 6px;
+
+    border-radius: 5px;
+
+    font-size: 12px;
+
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+
+/* View */
+
+.view-user-btn {
+    background: #343a40;
+    color: white;
+}
+
+.view-user-btn:hover {
+    background: #212529;
+}
+
+
+/* Deactivate */
+
+.deactivate-btn {
+    background: #ffc107;
+    color: #212529;
+}
+
+.deactivate-btn:hover {
+    background: #e0a800;
+}
+
+
+/* Activate */
+
+.activate-btn {
+    background: #198754;
+    color: white;
+}
+
+.activate-btn:hover {
+    background: #146c43;
+}
+
+
+/* Delete */
+
+.delete-user-btn {
+    background: #dc3545;
+    color: white;
+}
+
+.delete-user-btn:hover {
+    background: #bb2d3b;
+}
+
+
+/* =========================
+   NO USERS
+========================= */
+
+.no-users {
+    text-align: center;
+
+    padding: 40px !important;
+
+    color: #777 !important;
+
+    font-size: 15px !important;
+}
+
+
+/* =========================
+   LOADING
+========================= */
+
+.admin-users > h2 {
+    text-align: center;
+
+    margin-top: 100px;
+
+    color: #555;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+
+    .admin-users {
+        padding: 20px;
+    }
+
+    .users-header {
+        padding: 18px;
+    }
+
+    .users-filter {
+        flex-direction: column;
+    }
+
+    .users-filter input,
+    .users-filter select {
+        width: 100%;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .admin-users {
+        padding: 15px;
+    }
+
+    .users-header {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 10px;
+    }
+
+    .users-header h2 {
+        font-size: 21px;
+    }
+}

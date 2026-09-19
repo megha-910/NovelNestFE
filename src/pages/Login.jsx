@@ -27,35 +27,51 @@ function Login() {
                         password: password
                     })
                 }
-            );
+            );     
 
-            const data = await response.json();
+               const text = await response.text();
+
+        // Convert to JSON only if response has content
+        const data = text ? JSON.parse(text) : {};
+
+        console.log("Status:", response.status);
+        console.log("Response:", data);
 
             if (response.ok) {
-
+                  const role = data.role?.toUpperCase();
                 // Store JWT
                 localStorage.setItem(
                     "token",
                     data.token
                 );
 
+                localStorage.setItem("userId", data.id);
+
+                
+                  localStorage.setItem(
+                    "role",
+                    data.role
+                );
                 // Store username
                 localStorage.setItem(
                     "username",
-                    username
+                    data.username
                 );
 
-                localStorage.setItem("userId", data.id);
+
 
                 alert(data.message);
 
-                window.location.href = "/";
 
+                if (role === "ADMIN") { 
+                    window.location.href = "/admin";  
+                } if(role === "USER") { 
+                     window.location.href = "/"; 
+                }
             } else {
 
                 alert(data.message || "Login failed");
             }
-
         } catch (error) {
 
             console.error(error);

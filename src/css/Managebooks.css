@@ -1,0 +1,334 @@
+.admin-books {
+    min-height: 100vh;
+    padding: 30px;
+    background: #f5f6fa;
+    box-sizing: border-box;
+}
+
+/* HEADER */
+
+.books-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background: white;
+    padding: 20px 25px;
+    margin-bottom: 25px;
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.books-header h2 {
+    margin: 0;
+    color: #222;
+    font-size: 26px;
+}
+
+.books-header p {
+    margin: 6px 0 0;
+    color: #777;
+    font-size: 14px;
+}
+
+.book-count {
+    color: #555;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+
+/* CONTROLS */
+
+.books-controls {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+}
+
+.books-controls input {
+    width: 330px;
+    height: 45px;
+
+    padding: 0 15px;
+
+    border: 1px solid #ddd;
+    border-radius: 7px;
+
+    background: white;
+
+    font-size: 14px;
+    outline: none;
+}
+
+.books-controls input:focus {
+    border-color: #555;
+}
+
+.books-controls select {
+    width: 190px;
+    height: 45px;
+
+    padding: 0 12px;
+
+    border: 1px solid #ddd;
+    border-radius: 7px;
+
+    background: white;
+
+    font-size: 14px;
+
+    outline: none;
+
+    cursor: pointer;
+}
+
+
+/* ADD BOOK */
+
+.add-book-btn {
+    height: 45px;
+
+    padding: 0 18px;
+
+    border: none;
+    border-radius: 7px;
+
+    background: #198754;
+    color: white;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.add-book-btn:hover {
+    background: #146c43;
+}
+
+
+/* TABLE */
+
+.books-table {
+    width: 100%;
+
+    background: white;
+
+    border-radius: 10px;
+
+    overflow-x: auto;
+
+    box-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.books-table table {
+    width: 100%;
+    min-width: 1000px;
+
+    border-collapse: collapse;
+}
+
+.books-table thead {
+    background: #222;
+}
+
+.books-table th {
+    padding: 15px 18px;
+
+    text-align: left;
+
+    color: white;
+
+    font-size: 14px;
+}
+
+.books-table td {
+    padding: 15px 18px;
+
+    border-bottom: 1px solid #eee;
+
+    color: #444;
+
+    font-size: 14px;
+
+    vertical-align: middle;
+}
+
+.books-table tbody tr:hover {
+    background: #f8f9fa;
+}
+
+
+/* BOOK IMAGE */
+
+.book-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    min-width: 220px;
+}
+
+.book-info img {
+    width: 50px;
+    height: 65px;
+
+    object-fit: cover;
+
+    border-radius: 5px;
+
+    border: 1px solid #ddd;
+}
+
+.book-info span {
+    font-weight: 600;
+    color: #222;
+}
+
+
+/* CATEGORY */
+
+.category-badge {
+    display: inline-block;
+
+    padding: 5px 10px;
+
+    border-radius: 15px;
+
+    background: #e7f1ff;
+
+    color: #0d6efd;
+
+    font-size: 12px;
+
+    font-weight: 600;
+}
+
+
+/* STOCK */
+
+.in-stock {
+    color: #198754;
+    font-weight: 600;
+}
+
+.low-stock {
+    color: #fd7e14;
+    font-weight: 600;
+}
+
+.out-stock {
+    color: #dc3545;
+    font-weight: 600;
+}
+
+
+/* BUTTONS */
+
+.books-table button {
+    border: none;
+
+    padding: 8px 12px;
+
+    margin-right: 6px;
+
+    border-radius: 5px;
+
+    font-size: 12px;
+
+    cursor: pointer;
+}
+
+
+/* EDIT */
+
+.edit-book-btn {
+    background: #ffc107;
+    color: #212529;
+}
+
+.edit-book-btn:hover {
+    background: #e0a800;
+}
+
+
+/* DELETE */
+
+.delete-book-btn {
+    background: #dc3545;
+    color: white;
+}
+
+.delete-book-btn:hover {
+    background: #bb2d3b;
+}
+
+
+/* EMPTY */
+
+.no-books {
+    text-align: center;
+
+    padding: 40px !important;
+
+    color: #777 !important;
+}
+
+
+/* LOADING */
+
+.admin-books > h2 {
+    text-align: center;
+
+    margin-top: 100px;
+
+    color: #555;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+
+    .admin-books {
+        padding: 20px;
+    }
+
+    .books-header {
+        padding: 18px;
+    }
+
+    .books-controls {
+        flex-direction: column;
+    }
+
+    .books-controls input,
+    .books-controls select,
+    .add-book-btn {
+        width: 100%;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .admin-books {
+        padding: 15px;
+    }
+
+    .books-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .books-header h2 {
+        font-size: 21px;
+    }
+}

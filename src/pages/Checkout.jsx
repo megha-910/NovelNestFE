@@ -10,6 +10,7 @@ function Checkout() {
     const [cartItems, setCartItems] = useState([]);
     const [loading, setLoading] = useState(true);
     const [placingOrder, setPlacingOrder] = useState(false);
+    const [razorPayO, setRazorPayO] = useState();
 
     const [address, setAddress] = useState({
         name: "",
@@ -21,34 +22,9 @@ function Checkout() {
     });
 
 
-    // Clear cart
-    
-    const clearCart = async (cartId) => {
-
-    try {
-
-        console.log("Clearing cart:", cartId);
-
-        await api.post(`/cart/clear/${cartId}`);
-
-        setCartItems([]);
-
-        console.log("Cart cleared successfully");
-
-    } catch (error) {
-
-        console.error("Clear cart error:", error);
-
-        alert(
-            error.response?.data?.message ||
-            "Unable to clear cart"
-        );
-    }
-};
     // =====================================================
     // CHECK LOGIN + FETCH CART
-    // ====================================================
-
+    // =====================================================
 
     useEffect(() => {
 
@@ -84,7 +60,10 @@ function Checkout() {
 
         } catch (error) {
 
-            console.error("Checkout cart error:", error);
+            console.error(
+                "Checkout cart error:",
+                error
+            );
 
             alert(
                 error.response?.data?.message ||
@@ -94,6 +73,41 @@ function Checkout() {
         } finally {
 
             setLoading(false);
+        }
+    };
+
+
+    // =====================================================
+    // CLEAR CART
+    // =====================================================
+
+    const clearCart = async (cartId) => {
+
+        try {
+
+            console.log(
+                "Clearing cart:",
+                cartId
+            );
+
+            await api.post(
+                `/cart/clear/${cartId}`
+            );
+
+            setCartItems([]);
+
+            console.log(
+                "Cart cleared successfully"
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Clear cart error:",
+                error
+            );
+
+            throw error;
         }
     };
 
@@ -120,12 +134,15 @@ function Checkout() {
     const getTotal = () => {
 
         return cartItems.reduce(
-            (total, item) =>
-                total +
-                (
-                    item.novel.price *
-                    item.quantity
-                ),
+            (total, item) => {
+
+                return total +
+                    (
+                        item.novel.price *
+                        item.quantity
+                    );
+
+            },
             0
         );
     };
@@ -138,50 +155,129 @@ function Checkout() {
     const validateAddress = () => {
 
         if (!address.name.trim()) {
-            alert("Please enter your name");
+
+            alert(
+                "Please enter your name"
+            );
+
             return false;
         }
 
-        if (!/^[0-9]{10}$/.test(address.phone)) {
-            alert("Please enter a valid 10 digit phone number");
+
+        if (
+            !/^[0-9]{10}$/.test(
+                address.phone
+            )
+        ) {
+
+            alert(
+                "Please enter a valid 10 digit phone number"
+            );
+
             return false;
         }
+
 
         if (!address.addressLine.trim()) {
-            alert("Please enter your address");
+
+            alert(
+                "Please enter your address"
+            );
+
             return false;
         }
+
 
         if (!address.city.trim()) {
-            alert("Please enter your city");
+
+            alert(
+                "Please enter your city"
+            );
+
             return false;
         }
+
 
         if (!address.state.trim()) {
-            alert("Please enter your state");
+
+            alert(
+                "Please enter your state"
+            );
+
             return false;
         }
 
-        if (!/^[0-9]{6}$/.test(address.pincode)) {
-            alert("Please enter a valid 6 digit pincode");
+
+        if (
+            !/^[0-9]{6}$/.test(
+                address.pincode
+            )
+        ) {
+
+            alert(
+                "Please enter a valid 6 digit pincode"
+            );
+
             return false;
         }
+
 
         return true;
     };
 
 
     // =====================================================
-    // CREATE RAZORPAY ORDER
+    // SAVE ORDER IN DATABASE
+    // =====================================================
+
+    const saveOrder = async (paymentResponse) => {
+
+        try {
+
+            const orderResponse =
+                await api.post(
+                    "/order/save-order",
+                    {
+                        totalAmount: getTotal(),
+                        razorpayPaymentId:  paymentResponse
+                                            .razorpay_payment_id,
+                    }
+                );
+
+            console.log(
+                "Order saved:",
+                orderResponse.data
+            );
+
+            return orderResponse.data;
+
+        } catch (error) {
+
+            console.error(
+                "Save order error:",
+                error
+            );
+
+            throw error;
+        }
+    };
+
+
+    // =====================================================
+    // PLACE ORDER
     // =====================================================
 
     const placeOrder = async () => {
 
         if (cartItems.length === 0) {
 
-            alert("Your cart is empty");
+            alert(
+                "Your cart is empty"
+            );
+
             return;
         }
+
 
         if (!validateAddress()) {
             return;
@@ -195,17 +291,17 @@ function Checkout() {
             // STEP 1: CREATE RAZORPAY ORDER
             // =================================================
 
-            const response = await api.post(
-                "/order/create-order"
-            );
+            const response =
+                await api.post(
+                    "/order/create-order"
+                );
 
-            
+
             console.log(
                 "Razorpay order response:",
                 response.data
             );
 
-            
 
             const razorpayOrderId =
                 response.data.id;
@@ -220,8 +316,29 @@ function Checkout() {
                 response.data.key;
 
 
+
+            if (!razorpayOrderId) {
+
+                throw new Error(
+                    "Razorpay order ID not received"
+                );
+            }
+            setRazorPayO(razorpayOrderId);
+
             // =================================================
-            // STEP 2: RAZORPAY OPTIONS
+            // STEP 2: GET CART ID
+            // =================================================
+
+            const cartId =
+                cartItems[0]?.cart?.id;
+
+            console.log(
+                "Cart ID:",
+                cartId
+            );
+
+            // =================================================
+            // STEP 3: RAZORPAY OPTIONS
             // =================================================
 
             const options = {
@@ -234,16 +351,20 @@ function Checkout() {
 
                 name: "NovelNest",
 
-                description: "NovelNest Order",
+                description:
+                    "NovelNest Book Order",
 
-                order_id: razorpayOrderId,
+                order_id:
+                    razorpayOrderId,
 
 
                 // =================================================
-                // STEP 3: PAYMENT SUCCESS
+                // PAYMENT SUCCESS
                 // =================================================
 
-                handler: async function (paymentResponse) {
+                handler: async function (
+                    paymentResponse
+                ) {
 
                     try {
 
@@ -252,36 +373,96 @@ function Checkout() {
                             paymentResponse
                         );
 
-                          // Get cart ID
-              const cartId = cartItems[0]?.cart?.id;
 
-             console.log("Cart ID:", cartId);
+                        // =========================================
+                        // STEP 4: VERIFY PAYMENT
+                        // =========================================
 
-        // Clear cart
-               if (cartId) {
-                    await clearCart(cartId);
-                 }
+                        const verifyResponse =
+                            await api.post(
+                                "/order/verify-payment",
+                                {
+                                    razorpay_order_id:
+                                        paymentResponse
+                                            .razorpay_order_id,
 
-            alert("Payment successful! Order placed successfully.");
+                                    razorpay_payment_id:
+                                        paymentResponse
+                                            .razorpay_payment_id,
 
-            navigate("/Myorders");
+                                    razorpay_signature:
+                                        paymentResponse
+                                            .razorpay_signature
+                                }
+                            );
+
+
+                        console.log(
+                            "Payment verification:",
+                            verifyResponse.data
+                        );
+
+
+                        // =========================================
+                        // STEP 5: SAVE ORDER
+                        // =========================================
+
+                        const savedOrder =
+                            await saveOrder(paymentResponse);
+
+
+                        console.log(
+                            "Saved Order:",
+                            savedOrder
+                        );
+
+
+                        // =========================================
+                        // STEP 6: CLEAR CART
+                        // =========================================
+
+                        if (cartId) {
+
+                            await clearCart(
+                                cartId
+                            );
+                        }
                       
+                        // =========================================
+                        // STEP 7: SUCCESS
+                        // =========================================
+
+                        alert(
+                            "Payment successful! Order placed successfully."
+                        );
+
+
+                        navigate(
+                            "/Myorders"
+                        );
 
                     } catch (error) {
 
                         console.error(
-                            "Payment verification error:",
+                            "Payment/order error:",
                             error
                         );
 
+                        console.error(
+                            "Server response:",
+                            error.response?.data
+                        );
+
+
                         alert(
                             error.response?.data?.message ||
-                            "Payment verification failed"
+                            error.response?.data ||
+                            error.message ||
+                            "Payment verification or order saving failed"
                         );
                     }
                 },
-                
-              
+
 
                 // =================================================
                 // CUSTOMER DETAILS
@@ -289,9 +470,11 @@ function Checkout() {
 
                 prefill: {
 
-                    name: address.name,
+                    name:
+                        address.name,
 
-                    contact: address.phone
+                    contact:
+                        address.phone
                 },
 
 
@@ -303,6 +486,9 @@ function Checkout() {
 
                     delivery_name:
                         address.name,
+
+                    delivery_phone:
+                        address.phone,
 
                     delivery_address:
                         address.addressLine,
@@ -317,8 +503,13 @@ function Checkout() {
                         address.pincode
                 },
 
-               
+
+                // =================================================
+                // THEME
+                // =================================================
+
                 theme: {
+
                     color: "#3399cc"
                 }
             };
@@ -343,13 +534,15 @@ function Checkout() {
             // =================================================
 
             const razorpay =
-                new window.Razorpay(options);
+                new window.Razorpay(
+                    options
+                );
 
 
             // =================================================
             // PAYMENT FAILED
             // =================================================
-          
+
             razorpay.on(
                 "payment.failed",
                 function (response) {
@@ -358,6 +551,7 @@ function Checkout() {
                         "Payment failed:",
                         response.error
                     );
+
 
                     alert(
                         response.error?.description ||
@@ -369,8 +563,6 @@ function Checkout() {
 
             razorpay.open();
 
-            
-    
 
         } catch (error) {
 
@@ -379,8 +571,16 @@ function Checkout() {
                 error
             );
 
+
+            console.error(
+                "Server response:",
+                error.response?.data
+            );
+
+
             alert(
                 error.response?.data?.message ||
+                error.response?.data ||
                 "Unable to create Razorpay order"
             );
 
@@ -388,10 +588,7 @@ function Checkout() {
 
             setPlacingOrder(false);
         }
-
-       
-      };
-     
+    };
 
 
     // =====================================================
@@ -405,8 +602,8 @@ function Checkout() {
                 Loading checkout...
             </div>
         );
-          
     }
+
 
     // =====================================================
     // UI
@@ -418,7 +615,10 @@ function Checkout() {
 
             <div className="checkout-container">
 
-                <h1>Checkout</h1>
+                <h1>
+                    Checkout
+                </h1>
+
 
                 <div className="checkout-content">
 
@@ -438,55 +638,85 @@ function Checkout() {
                                 Delivery Address
                             </h2>
 
+
                             <div className="address-form">
 
                                 <input
                                     type="text"
                                     name="name"
                                     placeholder="Full Name"
-                                    value={address.name}
-                                    onChange={handleAddressChange}
+                                    value={
+                                        address.name
+                                    }
+                                    onChange={
+                                        handleAddressChange
+                                    }
                                 />
+
 
                                 <input
                                     type="text"
                                     name="phone"
                                     placeholder="Phone Number"
                                     maxLength="10"
-                                    value={address.phone}
-                                    onChange={handleAddressChange}
+                                    value={
+                                        address.phone
+                                    }
+                                    onChange={
+                                        handleAddressChange
+                                    }
                                 />
+
 
                                 <textarea
                                     name="addressLine"
                                     placeholder="Address"
-                                    value={address.addressLine}
-                                    onChange={handleAddressChange}
+                                    value={
+                                        address.addressLine
+                                    }
+                                    onChange={
+                                        handleAddressChange
+                                    }
                                 />
+
 
                                 <input
                                     type="text"
                                     name="city"
                                     placeholder="City"
-                                    value={address.city}
-                                    onChange={handleAddressChange}
+                                    value={
+                                        address.city
+                                    }
+                                    onChange={
+                                        handleAddressChange
+                                    }
                                 />
+
 
                                 <input
                                     type="text"
                                     name="state"
                                     placeholder="State"
-                                    value={address.state}
-                                    onChange={handleAddressChange}
+                                    value={
+                                        address.state
+                                    }
+                                    onChange={
+                                        handleAddressChange
+                                    }
                                 />
+
 
                                 <input
                                     type="text"
                                     name="pincode"
                                     placeholder="Pincode"
                                     maxLength="6"
-                                    value={address.pincode}
-                                    onChange={handleAddressChange}
+                                    value={
+                                        address.pincode
+                                    }
+                                    onChange={
+                                        handleAddressChange
+                                    }
                                 />
 
                             </div>
@@ -503,56 +733,75 @@ function Checkout() {
                             </h2>
 
 
-                            {cartItems.map((item) => (
+                            {cartItems.map(
+                                (item) => (
 
-                                <div
-                                    className="checkout-item"
-                                    key={item.id}
-                                >
+                                    <div
+                                        className="checkout-item"
+                                        key={item.id}
+                                    >
 
-                                    <img
-                                        src={item.novel.imageUrl}
-                                        alt={item.novel.title}
-                                    />
+                                        <img
+                                            src={
+                                                item.novel.imageUrl
+                                            }
+                                            alt={
+                                                item.novel.title
+                                            }
+                                        />
 
 
-                                    <div className="checkout-item-info">
+                                        <div className="checkout-item-info">
 
-                                        <h3>
-                                            {item.novel.title}
-                                        </h3>
+                                            <h3>
+                                                {
+                                                    item.novel.title
+                                                }
+                                            </h3>
 
-                                        <p>
-                                            Author:{" "}
-                                            {item.novel.author}
-                                        </p>
 
-                                        <p>
-                                            Quantity:{" "}
-                                            {item.quantity}
-                                        </p>
+                                            <p>
+                                                Author:{" "}
+                                                {
+                                                    item.novel.author
+                                                }
+                                            </p>
 
-                                        <p>
-                                            Price: ₹
-                                            {item.novel.price.toFixed(2)}
-                                        </p>
+
+                                            <p>
+                                                Quantity:{" "}
+                                                {
+                                                    item.quantity
+                                                }
+                                            </p>
+
+
+                                            <p>
+                                                Price: ₹
+                                                {
+                                                    item.novel.price
+                                                        .toFixed(2)
+                                                }
+                                            </p>
+
+                                        </div>
+
+
+                                        <div className="checkout-item-price">
+
+                                            ₹
+                                            {
+                                                (
+                                                    item.novel.price *
+                                                    item.quantity
+                                                ).toFixed(2)
+                                            }
+
+                                        </div>
 
                                     </div>
-
-
-                                    <div className="checkout-item-price">
-
-                                        ₹
-                                        {(
-                                            item.novel.price *
-                                            item.quantity
-                                        ).toFixed(2)}
-
-                                    </div>
-
-                                </div>
-
-                            ))}
+                                )
+                            )}
 
                         </div>
 
@@ -577,7 +826,9 @@ function Checkout() {
                             </span>
 
                             <span>
-                                {cartItems.length}
+                                {
+                                    cartItems.length
+                                }
                             </span>
 
                         </div>
@@ -590,7 +841,11 @@ function Checkout() {
                             </span>
 
                             <strong>
-                                ₹{getTotal().toFixed(2)}
+                                ₹
+                                {
+                                    getTotal()
+                                        .toFixed(2)
+                                }
                             </strong>
 
                         </div>
@@ -600,13 +855,18 @@ function Checkout() {
 
                         <button
                             className="place-order-btn"
-                            onClick={placeOrder}
-                            disabled={placingOrder}
+                            onClick={
+                                placeOrder
+                            }
+                            disabled={
+                                placingOrder
+                            }
                         >
 
-                            {placingOrder
-                                ? "Processing..."
-                                : "Checkout"
+                            {
+                                placingOrder
+                                    ? "Processing..."
+                                    : "Checkout"
                             }
 
                         </button>
